@@ -57,3 +57,33 @@ func (bot *Bot) InitWxids(body InitWxidsReq) (rsp InitWxidsRsp, err error) {
 
 	return
 }
+
+//  SearchContact
+func (bot *Bot) SearchContact(body SearchContactReq) (rsp SearchContactRsp, err error) {
+
+	var errRsp ErrorRsp
+
+	resp, err := bot.HttpClient.R().
+		SetBody(body).
+		SetQueryParams(bot.Option).
+		SetQueryParam("funcname", "SearchContact").
+		Post(bot.Url + LuaApiCallerPATH)
+
+	if err != nil {
+		return
+	}
+
+	// json unmarshal
+	_ = json.Unmarshal(resp.Body(), &errRsp)
+
+	if errRsp.Ret != 0 {
+		err = errors.New(errRsp.ErrMsg)
+		return
+	}
+
+	if err = json.Unmarshal(resp.Body(), &rsp); err != nil {
+		return
+	}
+
+	return
+}
