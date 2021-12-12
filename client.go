@@ -1,6 +1,8 @@
 package rstarhelper
 
-import "github.com/go-resty/resty/v2"
+const (
+	LuaApiCallerPATH = "/v1/LuaApiCaller"
+)
 
 // BotManager
 type BotManager struct {
@@ -11,21 +13,5 @@ type BotManager struct {
 func NewBotManager(url string) *BotManager {
 	return &BotManager{
 		Url: url,
-	}
-}
-
-// Bot
-type Bot struct {
-	Url        string
-	WxID       string
-	HttpClient *resty.Client
-}
-
-// NewBot
-func (bm *BotManager) NewBot(wxID string) *Bot {
-	return &Bot{
-		Url:        bm.Url,
-		WxID:       wxID,
-		HttpClient: resty.New(),
 	}
 }
